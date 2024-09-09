@@ -3,6 +3,8 @@ package com.uvg.rueda.lab08.characters
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -24,13 +26,18 @@ fun CharactersScreen(onCharacterSelected: (Int) -> Unit) {
     ) { paddingValues ->
         val characters = CharacterDb().getAllCharacters()
 
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .padding(paddingValues)
                 .fillMaxSize()
+                .padding(paddingValues),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(16.dp)
         ) {
-            characters.forEach { character ->
-                CharacterItem(character = character, onClick = { onCharacterSelected(character.id) })
+            items(characters) { character ->
+                CharacterItem(
+                    character = character,
+                    onClick = { onCharacterSelected(character.id) }
+                )
             }
         }
     }
