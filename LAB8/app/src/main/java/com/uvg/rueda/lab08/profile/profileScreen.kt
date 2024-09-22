@@ -46,7 +46,7 @@ fun ProfileScreen(onLogout: () -> Unit) {
             )
             Text(
                 text = "Carné: 23748",
-                color = MaterialTheme.colorScheme.onSurface 
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(32.dp))
             // Botón para cerrar sesión
