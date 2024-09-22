@@ -1,4 +1,4 @@
-// import .....Location
+package com.uvg.rueda.lab08.data
 
 class LocationDb {
     private val locations: List<Location> = listOf(
