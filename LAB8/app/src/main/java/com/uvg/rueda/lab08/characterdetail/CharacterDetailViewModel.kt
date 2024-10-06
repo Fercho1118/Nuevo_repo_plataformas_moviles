@@ -26,21 +26,23 @@ class CharacterDetailViewModel(
 
     private fun loadCharacterDetail() {
         viewModelScope.launch {
-            delay(2000)
-            val character = CharacterDb().getCharacterById(characterId)
-            _uiState.value = UiState(
-                isLoading = false,
-                data = character
-            )
+            try {
+                delay(2000)
+                if (_uiState.value.hasError) return@launch
+                val character = CharacterDb().getCharacterById(characterId)
+                _uiState.value = UiState(isLoading = false, data = character)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(hasError = true)
+            }
         }
     }
 
     fun triggerError() {
-        _uiState.value = _uiState.value.copy(hasError = true)
+        _uiState.value = _uiState.value.copy(hasError = true, isLoading = false)
     }
 
     fun retry() {
-        _uiState.value = _uiState.value.copy(isLoading = true, hasError = false)
+        _uiState.value = UiState(isLoading = true)
         loadCharacterDetail()
     }
 }

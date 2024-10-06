@@ -21,21 +21,23 @@ class LocationsViewModel : ViewModel() {
 
     private fun loadLocations() {
         viewModelScope.launch {
-            delay(4000)
-            val locations = LocationDb().getAllLocations()
-            _uiState.value = UiState(
-                isLoading = false,
-                data = locations
-            )
+            try {
+                delay(4000)
+                if (_uiState.value.hasError) return@launch
+                val locations = LocationDb().getAllLocations()
+                _uiState.value = UiState(isLoading = false, data = locations)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(hasError = true)
+            }
         }
     }
 
     fun triggerError() {
-        _uiState.value = _uiState.value.copy(hasError = true)
+        _uiState.value = _uiState.value.copy(hasError = true, isLoading = false)
     }
 
     fun retry() {
-        _uiState.value = _uiState.value.copy(isLoading = true, hasError = false)
+        _uiState.value = UiState(isLoading = true)
         loadLocations()
     }
 }

@@ -21,20 +21,22 @@ class CharactersViewModel : ViewModel() {
 
     private fun loadCharacters() {
         viewModelScope.launch {
-            delay(4000)
-            _uiState.value = UiState(
-                isLoading = false,
-                data = CharacterDb().getAllCharacters()
-            )
+            try {
+                delay(4000)
+                if (_uiState.value.hasError) return@launch
+                _uiState.value = UiState(isLoading = false, data = CharacterDb().getAllCharacters())
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(hasError = true)
+            }
         }
     }
 
     fun triggerError() {
-        _uiState.value = _uiState.value.copy(hasError = true)
+        _uiState.value = _uiState.value.copy(hasError = true, isLoading = false)
     }
 
     fun retry() {
-        _uiState.value = _uiState.value.copy(isLoading = true, hasError = false)
+        _uiState.value = UiState(isLoading = true)
         loadCharacters()
     }
 }

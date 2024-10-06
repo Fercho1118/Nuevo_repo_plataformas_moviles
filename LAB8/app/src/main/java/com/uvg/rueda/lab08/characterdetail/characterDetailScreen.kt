@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.uvg.rueda.lab08.R
@@ -54,7 +55,11 @@ fun CharacterDetailScreen(
                         tint = MaterialTheme.colorScheme.error
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Error al obtener detalles del personaje. Intenta de nuevo")
+                    Text(
+                        text = "Error al obtener detalles del personaje. Intenta de nuevo",
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = { viewModel.retry() }) {
                         Text("Reintentar")

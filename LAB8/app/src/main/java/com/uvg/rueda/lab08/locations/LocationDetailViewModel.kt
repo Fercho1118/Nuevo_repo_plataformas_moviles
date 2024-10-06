@@ -31,21 +31,23 @@ class LocationDetailViewModel(
 
     private fun loadLocationDetail() {
         viewModelScope.launch {
-            delay(2000)
-            val location = LocationDb().getLocationById(locationId)
-            _uiState.value = UiState(
-                isLoading = false,
-                data = location
-            )
+            try {
+                delay(2000)
+                if (_uiState.value.hasError) return@launch
+                val location = LocationDb().getLocationById(locationId)
+                _uiState.value = UiState(isLoading = false, data = location)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(hasError = true)
+            }
         }
     }
 
     fun triggerError() {
-        _uiState.value = _uiState.value.copy(hasError = true)
+        _uiState.value = _uiState.value.copy(hasError = true, isLoading = false)
     }
 
     fun retry() {
-        _uiState.value = _uiState.value.copy(isLoading = true, hasError = false)
+        _uiState.value = UiState(isLoading = true)
         loadLocationDetail()
     }
 }

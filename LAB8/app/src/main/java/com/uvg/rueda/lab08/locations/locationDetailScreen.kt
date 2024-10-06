@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.uvg.rueda.lab08.R
@@ -41,17 +42,25 @@ fun LocationDetailScreen(
         }
         uiState.hasError -> {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().padding(16.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_error_24),
                         contentDescription = "Error",
                         tint = MaterialTheme.colorScheme.error
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Error al obtener detalles de la locación. Intenta de nuevo")
+                    Text(
+                        text = "Error al obtener detalles de la locación. Intenta de nuevo",
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = { viewModel.retry() }) {
                         Text("Reintentar")
