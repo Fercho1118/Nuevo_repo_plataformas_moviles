@@ -58,6 +58,7 @@ fun CharacterDetailScreen(
                     Text(
                         text = "Error al obtener detalles del personaje. Intenta de nuevo",
                         style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(16.dp))

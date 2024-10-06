@@ -59,6 +59,7 @@ fun LocationDetailScreen(
                     Text(
                         text = "Error al obtener detalles de la locación. Intenta de nuevo",
                         style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(16.dp))

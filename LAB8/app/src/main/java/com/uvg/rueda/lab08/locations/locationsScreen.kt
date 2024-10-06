@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.uvg.rueda.lab08.R
@@ -52,7 +53,12 @@ fun LocationsScreen(
                         tint = MaterialTheme.colorScheme.error
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Error al obtener locaciones. Intenta de nuevo")
+                    Text(
+                        text = "Error al obtener locaciones. Intenta de nuevo",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = { viewModel.retry() }) {
                         Text("Reintentar")
