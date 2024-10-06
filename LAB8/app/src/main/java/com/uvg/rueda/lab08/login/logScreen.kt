@@ -49,4 +49,3 @@ fun LoginScreen(onNavigateToCharacters: () -> Unit) {
         }
     }
 }
-
