@@ -12,7 +12,11 @@ fun NavGraphBuilder.locationsNavigation(navController: NavHostController) {
         })
     }
     composable(route = "${Routes.LocationDetail.route}/{locationId}") { backStackEntry ->
-        val locationId = backStackEntry.arguments?.getString("locationId")?.toInt() ?: 0
-        LocationDetailScreen(locationId = locationId, onBack = { navController.popBackStack() })
-    }
-}
+        val locationId = backStackEntry.arguments?.getString("locationId")?.toIntOrNull()
+
+        if (locationId != null) {
+            LocationDetailScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+}}

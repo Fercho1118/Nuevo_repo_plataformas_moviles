@@ -23,7 +23,7 @@ class LocationDetailViewModel(
     private val _uiState = MutableStateFlow(UiState<Location>(isLoading = true))
     val uiState: StateFlow<UiState<Location>> = _uiState
 
-    private val locationId: Int = savedStateHandle["locationId"] ?: 0
+    private val locationId: Int = savedStateHandle.get<String>("locationId")?.toIntOrNull() ?: 0
 
     init {
         loadLocationDetail()

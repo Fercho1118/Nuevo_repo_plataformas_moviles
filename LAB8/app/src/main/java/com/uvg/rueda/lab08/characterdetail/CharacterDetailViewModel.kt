@@ -18,7 +18,7 @@ class CharacterDetailViewModel(
     private val _uiState = MutableStateFlow(UiState<Character>(isLoading = true))
     val uiState: StateFlow<UiState<Character>> = _uiState
 
-    private val characterId: Int = savedStateHandle["characterId"] ?: 0
+    private val characterId: Int = savedStateHandle.get<String>("characterId")?.toIntOrNull() ?: 0
 
     init {
         loadCharacterDetail()

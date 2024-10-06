@@ -7,8 +7,11 @@ import com.uvg.rueda.lab08.navigation.Routes
 
 fun NavGraphBuilder.characterDetailNavigation(navController: NavHostController) {
     composable(route = "${Routes.CharacterDetail.route}/{characterId}") { backStackEntry ->
-        val characterId = backStackEntry.arguments?.getString("characterId")?.toInt() ?: 0
+        val characterId = backStackEntry.arguments?.getString("characterId")?.toIntOrNull()
 
-        CharacterDetailScreen(characterId = characterId, onBack = { navController.popBackStack() })
-    }
-}
+        if (characterId != null) {
+            CharacterDetailScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+}}
