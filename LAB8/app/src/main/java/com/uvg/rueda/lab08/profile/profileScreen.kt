@@ -11,11 +11,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.uvg.rueda.lab08.login.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(onLogout: () -> Unit) {
+fun ProfileScreen(
+    viewModel: LoginViewModel,
+    onLogout: () -> Unit
+) {
+    val userName by viewModel.nameState.collectAsState()
+
     Scaffold { paddingValues ->
         Column(
             modifier = Modifier
@@ -41,16 +50,15 @@ fun ProfileScreen(onLogout: () -> Unit) {
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Nombre: Fernando Rueda",
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Carné: 23748",
+                text = "Nombre: ${userName ?: "No definido"}",
                 color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(32.dp))
             // Botón para cerrar sesión
-            Button(onClick = onLogout) {
+            Button(onClick = {
+                viewModel.logout()
+                onLogout()
+            }) {
                 Text(text = "Cerrar sesión")
             }
         }
@@ -60,5 +68,5 @@ fun ProfileScreen(onLogout: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewProfileScreen() {
-    ProfileScreen(onLogout = {})
+    ProfileScreen(viewModel = viewModel(), onLogout = {})
 }

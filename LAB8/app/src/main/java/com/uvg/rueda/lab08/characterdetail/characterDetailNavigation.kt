@@ -11,6 +11,7 @@ fun NavGraphBuilder.characterDetailNavigation(navController: NavHostController) 
 
         if (characterId != null) {
             CharacterDetailScreen(
+                characterId = characterId,
                 onBack = { navController.popBackStack() }
             )
         }

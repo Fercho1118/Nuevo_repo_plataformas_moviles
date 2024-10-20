@@ -21,7 +21,7 @@ import com.uvg.rueda.lab08.data.LocationDb
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationsScreen(
-    viewModel: LocationsViewModel = viewModel(),
+    viewModel: LocationsViewModel,
     onLocationSelected: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()

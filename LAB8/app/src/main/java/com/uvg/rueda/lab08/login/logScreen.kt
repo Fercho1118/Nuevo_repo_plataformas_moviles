@@ -31,7 +31,7 @@ import com.uvg.rueda.lab08.R
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = viewModel(),
+    viewModel: LoginViewModel,
     onNavigateToCharacters: () -> Unit
 ) {
     val context = LocalContext.current

@@ -25,7 +25,7 @@ import com.uvg.rueda.lab08.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharactersScreen(
-    viewModel: CharactersViewModel = viewModel(),
+    viewModel: CharactersViewModel,
     onCharacterSelected: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()

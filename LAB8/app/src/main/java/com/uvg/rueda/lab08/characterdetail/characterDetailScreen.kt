@@ -23,6 +23,7 @@ import com.uvg.rueda.lab08.data.CharacterDb
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterDetailScreen(
+    characterId: Int,
     viewModel: CharacterDetailViewModel = viewModel(),
     onBack: () -> Unit
 ) {
