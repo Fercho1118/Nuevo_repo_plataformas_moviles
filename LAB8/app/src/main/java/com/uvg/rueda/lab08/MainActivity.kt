@@ -32,6 +32,9 @@ import com.uvg.rueda.lab08.login.LoginViewModelFactory
 import com.uvg.rueda.lab08.login.loginNavigation
 import com.uvg.rueda.lab08.navigation.BottomNavigationBar
 import com.uvg.rueda.lab08.navigation.Routes
+import com.uvg.rueda.lab08.network.CharacterApiService
+import com.uvg.rueda.lab08.network.LocationApiService
+import com.uvg.rueda.lab08.network.RetrofitInstance
 import com.uvg.rueda.lab08.profile.ProfileScreen
 import com.uvg.rueda.lab08.ui.theme.Lab08Theme
 import kotlinx.coroutines.flow.first
@@ -50,8 +53,12 @@ class MainActivity : ComponentActivity() {
         locationDao = database.locationDao()
 
         val userRepository = UserRepository(applicationContext)
-        val characterRepository = CharacterRepository(characterDao)
-        val locationRepository = LocationRepository(locationDao)
+
+        val characterApiService = RetrofitInstance.retrofit.create(CharacterApiService::class.java)
+        val locationApiService = RetrofitInstance.retrofit.create(LocationApiService::class.java)
+
+        val characterRepository = CharacterRepository(characterDao, characterApiService)
+        val locationRepository = LocationRepository(locationDao, locationApiService)
 
         val viewModelFactory = LoginViewModelFactory(userRepository, characterRepository, locationRepository)
         val loginViewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
@@ -60,15 +67,16 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             val userName = userRepository.userNameFlow.first()
-        setContent {
-            Lab08App(
-                loginViewModel = loginViewModel,
-                charactersViewModel = charactersViewModel,
-                locationsViewModel = locationsViewModel,
-                startDestination = if (userName != null) Routes.Characters.route else Routes.Login.route
-            )
+            setContent {
+                Lab08App(
+                    loginViewModel = loginViewModel,
+                    charactersViewModel = charactersViewModel,
+                    locationsViewModel = locationsViewModel,
+                    startDestination = if (userName != null) Routes.Characters.route else Routes.Login.route
+                )
+            }
         }
-    }}
+    }
 }
 
 @Composable

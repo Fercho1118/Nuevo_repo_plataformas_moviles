@@ -1,23 +1,47 @@
 package com.uvg.rueda.lab08.data
 
-class CharacterRepository(private val characterDao: CharacterDao) {
+import com.uvg.rueda.lab08.network.CharacterApiService
+
+class CharacterRepository(
+    private val characterDao: CharacterDao,
+    private val apiService: CharacterApiService
+) {
 
     suspend fun insertInitialCharacters() {
-        val initialCharacters = CharacterDb().getAllCharacters()
-        characterDao.insertCharacters(initialCharacters.map { character ->
-            CharacterEntity(
-                id = character.id,
-                name = character.name,
-                status = character.status,
-                species = character.species,
-                gender = character.gender,
-                image = character.image
-            )
-        })
+        try {
+            val charactersFromApi = apiService.getCharacters()
+            characterDao.insertCharacters(charactersFromApi.map { character ->
+                CharacterEntity(
+                    id = character.id,
+                    name = character.name,
+                    status = character.status,
+                    species = character.species,
+                    gender = character.gender,
+                    image = character.image
+                )
+            })
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     suspend fun getAllCharacters(): List<CharacterEntity> {
-        return characterDao.getAllCharacters()
+        return try {
+            val charactersFromApi = apiService.getCharacters()
+            characterDao.insertCharacters(charactersFromApi.map { character ->
+                CharacterEntity(
+                    id = character.id,
+                    name = character.name,
+                    status = character.status,
+                    species = character.species,
+                    gender = character.gender,
+                    image = character.image
+                )
+            })
+            characterDao.getAllCharacters()
+        } catch (e: Exception) {
+            characterDao.getAllCharacters()
+        }
     }
 
     suspend fun getCharacterById(id: Int): CharacterEntity {
