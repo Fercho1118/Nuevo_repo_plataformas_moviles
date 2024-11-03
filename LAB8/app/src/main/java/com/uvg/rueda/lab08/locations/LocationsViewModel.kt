@@ -27,7 +27,7 @@ class LocationsViewModel(
                 delay(4000)
 
                 if (_uiState.value.hasError) return@launch
-                
+
                 val locationsFromApi = locationRepository.getAllLocations().map { entity ->
                     Location(
                         id = entity.id,

@@ -18,6 +18,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.uvg.rueda.lab08.characterdetail.characterDetailNavigation
 import com.uvg.rueda.lab08.characters.CharactersViewModel
+import com.uvg.rueda.lab08.characters.CharactersViewModelFactory
 import com.uvg.rueda.lab08.characters.charactersNavigation
 import com.uvg.rueda.lab08.data.AppDatabase
 import com.uvg.rueda.lab08.data.CharacterDao
@@ -26,6 +27,7 @@ import com.uvg.rueda.lab08.data.LocationDao
 import com.uvg.rueda.lab08.data.LocationRepository
 import com.uvg.rueda.lab08.data.UserRepository
 import com.uvg.rueda.lab08.locations.LocationsViewModel
+import com.uvg.rueda.lab08.locations.LocationsViewModelFactory
 import com.uvg.rueda.lab08.locations.locationsNavigation
 import com.uvg.rueda.lab08.login.LoginViewModel
 import com.uvg.rueda.lab08.login.LoginViewModelFactory
@@ -34,7 +36,7 @@ import com.uvg.rueda.lab08.navigation.BottomNavigationBar
 import com.uvg.rueda.lab08.navigation.Routes
 import com.uvg.rueda.lab08.network.CharacterApiService
 import com.uvg.rueda.lab08.network.LocationApiService
-import com.uvg.rueda.lab08.network.RetrofitInstance
+import com.uvg.rueda.lab08.network. NetworkModule
 import com.uvg.rueda.lab08.profile.ProfileScreen
 import com.uvg.rueda.lab08.ui.theme.Lab08Theme
 import kotlinx.coroutines.flow.first
@@ -54,16 +56,20 @@ class MainActivity : ComponentActivity() {
 
         val userRepository = UserRepository(applicationContext)
 
-        val characterApiService = RetrofitInstance.retrofit.create(CharacterApiService::class.java)
-        val locationApiService = RetrofitInstance.retrofit.create(LocationApiService::class.java)
+        val characterApiService = NetworkModule.retrofit.create(CharacterApiService::class.java)
+        val locationApiService = NetworkModule.retrofit.create(LocationApiService::class.java)
 
         val characterRepository = CharacterRepository(characterDao, characterApiService)
         val locationRepository = LocationRepository(locationDao, locationApiService)
 
+        val charactersViewModelFactory = CharactersViewModelFactory(characterRepository)
+        val charactersViewModel = ViewModelProvider(this, charactersViewModelFactory)[CharactersViewModel::class.java]
+
+        val locationsViewModelFactory = LocationsViewModelFactory(locationRepository)
+        val locationsViewModel = ViewModelProvider(this, locationsViewModelFactory)[LocationsViewModel::class.java]
+
         val viewModelFactory = LoginViewModelFactory(userRepository, characterRepository, locationRepository)
         val loginViewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
-        val charactersViewModel = ViewModelProvider(this)[CharactersViewModel::class.java]
-        val locationsViewModel = ViewModelProvider(this)[LocationsViewModel::class.java]
 
         lifecycleScope.launch {
             val userName = userRepository.userNameFlow.first()
@@ -77,7 +83,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
+
 
 @Composable
 fun Lab08App(
@@ -117,4 +123,4 @@ fun Lab08App(
             }
         }
     }
-}
+}}
